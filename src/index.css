@@ -2,25 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
-html, body, #root { height: 100%; }
-body { @apply bg-black text-white font-sans antialiased; }
+:root {
+  color-scheme: dark;
+  --gx: 50%;
+  --gy: 50%;
+}
 
-/* (aquí ya las utilidades glass/card-hover) */
+html,
+body,
+#root {
+  height: 100%;
+}
 
+body {
+  @apply bg-black text-white font-sans antialiased;
+  background-image: radial-gradient(circle at top, rgba(16, 185, 129, 0.08), transparent 35%);
+}
 
-/* --- UI utils --- */
 .glass {
-  backdrop-filter: blur(6px);
-  background: rgba(17, 24, 39, 0.8);     /* neutral-900/80 */
+  backdrop-filter: blur(8px);
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.82) 0%, rgba(10, 15, 20, 0.85) 100%);
   border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .card-hover {
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
+
 .card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(16,185,129,.08);
-  border-color: rgba(16,185,129,.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.45);
+}
+
+.ui-ambient-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(450px circle at var(--gx) var(--gy), rgba(16, 185, 129, 0.15), transparent 50%),
+    radial-gradient(380px circle at 18% 15%, rgba(34, 211, 238, 0.08), transparent 45%);
+}
+
+.ui-gravity-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(to right, rgba(16, 185, 129, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.12) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at var(--gx) var(--gy), black 22%, transparent 75%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-ambient-glow,
+  .ui-gravity-grid,
+  .card-hover {
+    transition: none;
+  }
 }

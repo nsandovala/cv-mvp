@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
+import GravityGrid from "./components/GravityGrid";
 import Profile from "./pages/Profile";
 import Projects from "./pages/Projects";
 import Codex from "./pages/Codex";
@@ -11,22 +12,28 @@ function App() {
 
   const renderPage = () => {
     switch (activePage) {
-      case "Projects": return <Projects />;
-      case "Codex":    return <Codex />;
-      case "Radar":    return <Radar />;
-      case "Contact":  return <Contact />;
-      default:         return <Profile />;
+      case "Projects":
+        return <Projects />;
+      case "Codex":
+        return <Codex />;
+      case "Radar":
+        return <Radar />;
+      case "Contact":
+        return <Contact />;
+      default:
+        return <Profile />;
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-black text-white">
+    <div className="relative flex min-h-screen bg-black text-white overflow-hidden">
+      <GravityGrid />
       <Sidebar activePage={activePage} setActivePage={setActivePage} />
-      <main className="flex-1 p-8 overflow-y-auto">
-     
+      <main className="relative z-10 flex-1 p-8 overflow-y-auto">
         {renderPage()}
       </main>
     </div>
   );
 }
+
 export default App;

@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { activeProjects } from "../data/projects";
 
+const filters = ["Todos", "Alta", "Media", "Baja"];
+
 export default function Projects() {
+  const [priorityFilter, setPriorityFilter] = useState("Todos");
+
+  const visibleProjects = useMemo(() => {
+    if (priorityFilter === "Todos") return activeProjects;
+    return activeProjects.filter((item) => item.priority === priorityFilter);
+  }, [priorityFilter]);
+
   const totalProjects = activeProjects.length;
   const avgProgress = Math.round(
     activeProjects.reduce((acc, item) => acc + item.progress, 0) / totalProjects
@@ -13,10 +22,10 @@ export default function Projects() {
     <section className="max-w-6xl">
       <h1 className="text-2xl font-bold text-emerald-300 mb-1">Proyectos activos</h1>
       <p className="text-neutral-400 mb-6">
-        Vista única de todo lo que estoy construyendo ahora: foco, avance y siguiente hito.
+        Todo tu trabajo actual en una sola pantalla, con foco y trazabilidad.
       </p>
 
-      <div className="grid sm:grid-cols-3 gap-3 mb-8">
+      <div className="grid sm:grid-cols-3 gap-3 mb-6">
         <div className="glass rounded-xl p-4">
           <p className="text-neutral-400 text-xs uppercase">En ejecución</p>
           <p className="text-2xl font-bold text-white">{totalProjects}</p>
@@ -31,8 +40,25 @@ export default function Projects() {
         </div>
       </div>
 
+      <div className="glass rounded-xl p-3 mb-6 flex flex-wrap items-center gap-2">
+        <span className="text-xs uppercase text-neutral-400 mr-2">Filtrar prioridad:</span>
+        {filters.map((filter) => (
+          <button
+            key={filter}
+            onClick={() => setPriorityFilter(filter)}
+            className={`px-3 py-1.5 text-xs rounded-full border transition ${
+              priorityFilter === filter
+                ? "border-emerald-400/70 bg-emerald-500/20 text-emerald-200"
+                : "border-neutral-700 text-neutral-300 hover:border-emerald-400/40"
+            }`}
+          >
+            {filter}
+          </button>
+        ))}
+      </div>
+
       <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
-        {activeProjects.map((p, i) => (
+        {visibleProjects.map((p, i) => (
           <motion.article
             key={p.slug}
             initial={{ opacity: 0, y: 12 }}
@@ -68,7 +94,7 @@ export default function Projects() {
               </div>
               <div className="w-full bg-neutral-800 rounded-full h-2">
                 <div
-                  className="bg-emerald-400 h-2 rounded-full"
+                  className="bg-gradient-to-r from-emerald-500 to-cyan-400 h-2 rounded-full"
                   style={{ width: `${p.progress}%` }}
                 />
               </div>
